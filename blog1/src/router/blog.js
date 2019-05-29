@@ -1,3 +1,5 @@
+const { getList } = require('../controller/blog')
+
 const handleBlogRouter = (req, res) => {
     const method = req.method
 
