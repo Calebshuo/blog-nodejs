@@ -1,4 +1,3 @@
-const http = require('http')
 const queryString = require('queryString')
 const handleUserRouter = require('./src/router/user')
 const handleBlogRouter = require('./src/router/blog')
@@ -12,7 +11,8 @@ const serverHandle = (req, res) => {
     req.path = url.split('?')[0]
 
     // parse query
-    const query = queryString.parse(url.split('?')[1])
+    req.query = queryString.parse(url.split('?')[1])
+
     // resolve blog router
     const blogData = handleBlogRouter(req, res)
     if (blogData) {
@@ -37,10 +37,4 @@ const serverHandle = (req, res) => {
     res.end()
 }
 
-const PORT = 8000
-
-const server = http.createServer(serverHandle)
-
-server.listen(PORT, () => {
-    console.log('node app start at port 8000')
-})
+module.exports = serverHandle
