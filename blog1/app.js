@@ -52,20 +52,20 @@ const serverHandle = (req, res) => {
             )
             return
         }
-
         // resolve user router
         const userData = handleUserRouter(req, res)
+
         if (userData) {
             res.end(
                 JSON.stringify(userData)
             )
             return
         }
+        // not match above router，改写响应头
+        res.writeHead(404, {'Content-type': 'text/plain'})
+        res.write("404")
+        res.end()
     })
-    // not match above router，改写响应头
-    res.writeHead(404, {'Content-type': 'text/plain'})
-    res.write("404")
-    res.end()
 }
 
 module.exports = serverHandle
