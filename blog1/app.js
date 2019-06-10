@@ -23,7 +23,7 @@ const postData = (req) => {
               resolve({})
               return
           }
-          console.log('postData', postData)
+          console.log('postData', postData,'JSON.parse(postData)',JSON.parse(postData))
           resolve(JSON.parse(postData))
         })
     })
@@ -56,11 +56,12 @@ const serverHandle = (req, res) => {
         }
         // resolve user router
         const userData = handleUserRouter(req, res)
-
         if (userData) {
-            res.end(
-                JSON.stringify(userData)
-            )
+            userData.then(v => {
+                res.end(
+                    JSON.stringify(v)
+                )
+            })
             return
         }
         // not match above router，改写响应头

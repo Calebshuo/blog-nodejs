@@ -33,21 +33,25 @@ const handleBlogRouter = (req, res) => {
     }
     // update blog 
     if (method === 'GET' && req.path === '/api/blog/update') {
-        const result = upDateBlog(id)
-        if (result) {
-            return new SuccessModel('update success')
-        } else {
-            return new ErrorModel('update failed')
-        }
+        const result = upDateBlog(id, req.body)
+        return result.then(v => {
+            if (v) {
+                return new SuccessModel('update success')
+            } else {
+                return new ErrorModel('update failed')
+            }
+        })
     }
     // delete blog
     if (method === 'POST' && req.path === '/api/blog/del') {
-        const result = delBlog(id)
-        if (result) {
-            return new SuccessModel('delete success')
-        } else {
-            return new ErrorModel('delete failed')
-        }
+        const result = delBlog(id, req.body.author)
+        return result.then(v => {
+            if (v) {
+                return new SuccessModel('delete success')
+            } else {
+                return new ErrorModel('delete failed')
+            }
+        })
     }
 }
 
