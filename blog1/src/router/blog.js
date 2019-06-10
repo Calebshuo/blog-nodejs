@@ -13,20 +13,23 @@ const handleBlogRouter = (req, res) => {
     if (method === 'GET' && req.path === '/api/blog/list') {
         let author = req.query.author || ''
         const keyword = req.query.keyword || ''
-        const listData = getList(author, keyword)
-        return new SuccessModel(listData)
+        // const listData = getList(author, keyword)
+        // return new SuccessModel(listData)
+        const result = getList(author, keyword)
+        return result.then(listData => (new SuccessModel(listData))
+        )
     }
 
     // get blog detail
     if (method === 'GET' && req.path === '/api/blog/detail') {
-        const detail = getDetail(id)
-        return new SuccessModel(detail)
+        const result = getDetail(id)
+        return result.then(detail => (new SuccessModel(detail)))
     }
 
     // create blog 
     if (method === 'POST' && req.path === '/api/blog/new') {
-        const data = newBlog(req.body)
-        return new SuccessModel(data)
+        const result = newBlog(req.body)
+        return result.then(id => (new SuccessModel(id)))
     }
     // update blog 
     if (method === 'GET' && req.path === '/api/blog/update') {

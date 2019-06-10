@@ -47,9 +47,11 @@ const serverHandle = (req, res) => {
         // resolve blog router
         const blogData = handleBlogRouter(req, res)
         if (blogData) {
-            res.end(
-                JSON.stringify(blogData)
-            )
+            blogData.then(v => {
+                res.end(
+                    JSON.stringify(v)
+                )
+            })
             return
         }
         // resolve user router
