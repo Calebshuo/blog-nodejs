@@ -1,7 +1,7 @@
 const { exec } = require('../db/mysql')
 
 const getList = (author, keyword) => {
-    // 其中 1=1 是占位用的，如果不写，where后面直接加and会报错，where后面什么也没有也会报错。类似于 aaa.html?a=1&b=2中的？。
+    // 其中 1=1 是占位用的，如果不写where，select * from blogs后面直接加and会报错，where后面什么也没有也会报错。类似于 aaa.html?a=1&b=2中的？。
     let sql = `select * from blogs where 1=1 `
     if (author) {
         sql += `and author=${author}`
