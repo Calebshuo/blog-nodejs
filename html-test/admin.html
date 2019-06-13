@@ -62,7 +62,7 @@
         // 获取 url 参数
         function getUrlParams() {
             let paramStr = location.href.split('?')[1] || ''
-            paramStr = paramStr.split('#')[0]
+            // paramStr = paramStr.split('#')[0]
             const result = {}
             paramStr.split('&').forEach(itemStr => {
                 const arr = itemStr.split('=')

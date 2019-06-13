@@ -6,7 +6,7 @@ const handleUserRouter = (req, res) => {
 
     // login
     if (method === 'POST' && req.path === '/api/user/login') {
-        const { username=1, password=1 } = req.body // 存疑 undefine外面没有引号
+        const { username, password } = req.body // 存疑 undefine外面没有引号
         console.log('username,password', username,password)
         const result = login(username, password)
         return result.then(data => {

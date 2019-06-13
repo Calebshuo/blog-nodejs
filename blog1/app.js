@@ -54,14 +54,16 @@ const serverHandle = (req, res) => {
     // parse cookie
     req.cookie = {}
     const cookieStr = req.headers.cookie || ''
+    console.log('cookieStr', cookieStr)
     cookieStr.split(';').forEach(element => {
-        const arr = element.split('=')
-        const key = arr[0].trim()
-        const val = arr[1].trim()
-        req.cookie[key] = val
+        if (element.indexOf('=') !== -1) {
+            const arr = element.split('=')
+            const key = arr[0].trim()
+            const val = arr[1].trim()
+            req.cookie[key] = val
+        }
     }); 
     console.log('req.cookie:',req.cookie)
-
     // parse session
     let needSetCookie = false
     let userId = req.cookie.userid

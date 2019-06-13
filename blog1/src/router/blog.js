@@ -20,8 +20,6 @@ const handleBlogRouter = (req, res) => {
     if (method === 'GET' && req.path === '/api/blog/list') {
         let author = req.query.author || ''
         const keyword = req.query.keyword || ''
-        // const listData = getList(author, keyword)
-        // return new SuccessModel(listData)
         const result = getList(author, keyword)
         return result.then(listData => (new SuccessModel(listData))
         )
@@ -45,7 +43,7 @@ const handleBlogRouter = (req, res) => {
         return result.then(id => (new SuccessModel(id)))
     }
     // update blog 
-    if (method === 'GET' && req.path === '/api/blog/update') {
+    if (method === 'POST' && req.path === '/api/blog/update') {
         const loginCheckResult = loginCheck(req)
         if (loginCheckResult) {
             // not login
@@ -67,7 +65,7 @@ const handleBlogRouter = (req, res) => {
             // not login
             return loginCheckResult
         }
-        author = req.session.username
+        let author = req.session.username
         const result = delBlog(id, author)
         return result.then(v => {
             if (v) {
