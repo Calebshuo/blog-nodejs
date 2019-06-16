@@ -1,6 +1,7 @@
 const queryString = require('queryString')
 const handleUserRouter = require('./src/router/user')
 const handleBlogRouter = require('./src/router/blog')
+const { get, set } = require('./src/db/redis')
 
 // set cookie expire
 const getCookieExpires = () => {
@@ -13,7 +14,7 @@ const getCookieExpires = () => {
 // the obj of storage
 const SESSION_DATA = {}
 
-const postData = (req) => {
+const getPostData = (req) => {
     return new Promise((resolve, reject) => {
         if (req.method !== 'POST') {
             resolve({})
@@ -65,21 +66,47 @@ const serverHandle = (req, res) => {
     }); 
     console.log('req.cookie:',req.cookie)
     // parse session
+    // let needSetCookie = false
+    // let userId = req.cookie.userid
+    // if (userId) {
+    //     if (!SESSION_DATA[userId]) {
+    //         SESSION_DATA[userId] = {}
+    //     }
+    // } else {
+    //     needSetCookie = true
+    //     userId = `${Date.now()}_${Math.random()}`
+    //     SESSION_DATA[userId] = {}
+    // }
+    // req.session = SESSION_DATA[userId]
+
+    // parse session （by redis）
     let needSetCookie = false
     let userId = req.cookie.userid
-    if (userId) {
-        if (!SESSION_DATA[userId]) {
-            SESSION_DATA[userId] = {}
-        }
-    } else {
+    if (!userId) {
         needSetCookie = true
         userId = `${Date.now()}_${Math.random()}`
-        SESSION_DATA[userId] = {}
+        // init redis session
+        set(userId, {})
     }
-    req.session = SESSION_DATA[userId]
+    // get session
+    req.sessionId = userId
+    get(req.sessionId).then(sessionData => {
+        if (sessionData == null) {
+            // init redis session
+            set(req.sessionId, {})
+            // set session
+            req.session = {}
+        } else {
+            // set session
+            req.session = sessionData
+        }
+        // console.log('req.session ', req.session)
 
+        // resolve post data
+        return getPostData(req)
+    })
     // resolve post method
-    postData(req).then((postData) => {
+    .then(postData => {
         // 给req.body赋值
         req.body = postData
         // resolve blog router
