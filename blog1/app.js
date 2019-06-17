@@ -12,7 +12,7 @@ const getCookieExpires = () => {
 }
 
 // the obj of storage
-const SESSION_DATA = {}
+// const SESSION_DATA = {}
 
 const getPostData = (req) => {
     return new Promise((resolve, reject) => {
