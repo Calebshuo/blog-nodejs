@@ -15,7 +15,7 @@ function genPassword(password) {
     return md5(str)
 }
 
-console.log(genPassword(123))
+// console.log(genPassword('123')) // 524ab85686df0e52ada43b11b53cce35
 
 module.exports = {
     genPassword
