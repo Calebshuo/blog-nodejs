@@ -1,4 +1,5 @@
 const { exec } = require('../db/mysql')
+const xss = require('xss')
 
 const getList = (author, keyword) => {
     // 其中 1=1 是占位用的，如果不写where，select * from blogs后面直接加and会报错，where后面什么也没有也会报错。类似于 aaa.html?a=1&b=2中的？。
@@ -22,7 +23,7 @@ const getDetail = (id) => {
 
 const newBlog = (blogData = {}) => {
     // blogData 是一个博客对象，包含 title content author 属性
-    const title = blogData.title
+    const title = xss(blogData.title)
     const content = blogData.content
     const author = blogData.author
     const createtime = Date.now()
