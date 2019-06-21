@@ -52,6 +52,7 @@ const handleBlogRouter = (req, res) => {
         const result = newBlog(req.body)
         return result.then(id => (new SuccessModel(id)))
     }
+
     // update blog 
     if (method === 'POST' && req.path === '/api/blog/update') {
         const loginCheckResult = loginCheck(req)
@@ -68,6 +69,7 @@ const handleBlogRouter = (req, res) => {
             }
         })
     }
+    
     // delete blog
     if (method === 'POST' && req.path === '/api/blog/del') {
         const loginCheckResult = loginCheck(req)
