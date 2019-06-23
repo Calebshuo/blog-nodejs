@@ -8,9 +8,9 @@ const con = mysql.createConnection(MYSQL_CONF)
 con.connect()
 
 con.on('error', function(err) {
-  logger.error('db error', err);
+  console.log('db error', err)
   if(err.code === 'PROTOCOL_CONNECTION_LOST') {
-      logger.error('db error执行重连:'+err.message);
+      console.log('db error执行重连:'+err.message)
       con.connect()
   } else {
       throw err;

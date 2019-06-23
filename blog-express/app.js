@@ -1,42 +1,57 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan'); // 自动生成日志
+var createError = require('http-errors')
+var express = require('express')
+var path = require('path')
+var cookieParser = require('cookie-parser')
+var logger = require('morgan') // 自动生成日志
+const blogRouter = require('./router/blog')
+const userRouter = require('./router/user')
+const session = require('express-session')
+const RedisStore = require('connect-redis')(session)
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var app = express() // 本次http请求的一个实例。
 
-var app = express(); // 本次http请求的一个实例。
+// // view engine setup
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'jade')
 
-// view engine setup   先不管视图，只关心后端。
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'public')))
+const redisClient = require('./db/redis')
+const sessionStore = new RedisStore({
+  client: redisClient
+})
+// 密匙类似于md5加密的那个
+app.use(session({
+  secret: 'calebli',
+  cookie: {
+    // path: '/',  // default setting
+    // httpOnly: true, // default setting
+    maxAge: 24 * 60 *60 * 1000
+  },
+  store: sessionStore
+}))
 
 // 注册路由
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/blog', blogRouter)
+app.use('/api/user', userRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
-});
+  next(createError(404))
+})
 
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'dev' ? err : {};
+  res.locals.message = err.message
+  res.locals.error = req.app.get('env') === 'dev' ? err : {}
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+  res.status(err.status || 500)
+  res.render('error')
+})
 
-module.exports = app;
+module.exports = app
