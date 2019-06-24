@@ -11,7 +11,8 @@ router.post('/login', function(req, res, next) {
             // 设置 session 直接同步到redis中
             req.session.username = data.username
             req.session.realname = data.realname
-
+            // 这里就不需要再写set了
+            // set(req.sessionId, req.session)
             res.json(
                 new SuccessModel()
             )

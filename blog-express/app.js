@@ -19,6 +19,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+
 const redisClient = require('./db/redis')
 const sessionStore = new RedisStore({
   client: redisClient
