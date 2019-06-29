@@ -11,6 +11,7 @@ const { SuccessModel, ErrorModel } = require('../model/resModel')
 const loginCheck = require('../middleware/loginCheck')
 
 router.get('/list', (req, res, next) => {
+    console.log(req.cookies,111)
     let author = req.query.author || ''
     const keyword = req.query.keyword || ''
 
