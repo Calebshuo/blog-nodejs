@@ -18,7 +18,7 @@ class LikeExpress {
             // 从第二个参数开始，转换为数组，存入 stack
             info.stack = slice.call(arguments, 1)
         } else {
-            info.path = '/'
+            info.path = '/' // 中间件没有第一个参数和第一个参数是'/'是一样的，因为所有路径都会命中这个中间件
             // 从第一个参数开始，转换为数组，存入 stack
             info.stack = slice.call(arguments, 0)
         }
@@ -26,7 +26,7 @@ class LikeExpress {
     }
 
     use() {
-        const info = this.register.apply(this, arguments)
+        const info = this.register.apply(this, arguments) // 注意下写法，结合手写apply来理解这段代码。
         this.routes.all.push(info)
     }
 
@@ -91,9 +91,10 @@ class LikeExpress {
         }
     }
 
+    // app.listen
     listen(...args) {
         const server = http.createServer(this.callback())
-        server.listen(...args)
+        server.listen(...args) // 参数透传，基于原生nodejs，和原生一样的写法。
     }
 }
 
