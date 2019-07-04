@@ -4,7 +4,7 @@
 #### 基于userid、cookie、session、redis的登录验证方案。
 #### nodejs 读文件相对路径问题，使用绝对路径原因，path.join/path.resolve用法。基于stream的好处。
 #### 基于stream写入日志，基于linux crontab命令按日期拆分日志，基于nodejs的readline分析日志。
-#### slq注入攻击、xss攻击、密码加密
+#### sql注入攻击、xss攻击、密码加密
 
 ### express框架：
 #### 对比原生 cookieParser原理、bodyParser原理、日志写入原理、路由注册原理
